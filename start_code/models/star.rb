@@ -1,23 +1,24 @@
 class Star
 
   attr_reader :id
-  attr_accessor :first_name, :last_name
+  attr_accessor :first_name, :last_name, :age
 
     def initialize(options)
       @first_name = options['first_name']
       @last_name = options['last_name']
+      @age = options['age'].to_i
       @id = options['id'].to_i if options['id']
     end
 
     def save()
       sql = "
         INSERT INTO stars
-        (first_name, last_name)
+        (first_name, last_name, age)
         VALUES
-        ($1, $2)
+        ($1, $2, $3)
         RETURNING *
       "
-      values = [@first_name, @last_name]
+      values = [@first_name, @last_name, @age]
       @id = SqlRunner.run(sql, values)[0]['id'].to_i
     end
 
@@ -26,11 +27,11 @@ class Star
         UPDATE
           stars
         SET
-          (first_name, last_name) = ($1, $2)
+          (first_name, last_name, age) = ($1, $2, $3)
         WHERE
-          id = $3
+          id = $4
         "
-      values = [@first_name, @last_name, @id]
+      values = [@first_name, @last_name, @age, @id]
       SqlRunner.run(sql, values)
     end
 

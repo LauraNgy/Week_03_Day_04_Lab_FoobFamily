@@ -65,7 +65,18 @@ class Movie
   end
 
   def remaining_budget
-
+    sql = "
+      SELECT
+        fee
+      FROM
+        castings
+      WHERE
+        movie_id = $1
+    "
+    values = [@id]
+    fees = SqlRunner.run(sql, values)
+    total_fees = fees.reduce(0){ |total, fee| total + fee['fee'].to_i }
+    return @budget - total_fees
   end
 
   def Movie.all()
