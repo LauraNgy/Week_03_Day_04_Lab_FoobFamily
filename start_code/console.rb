@@ -5,6 +5,7 @@ require_relative('models/star')
 require_relative('db/sql_runner')
 
 Star.delete_all
+Movie.delete_all
 
 star1 = Star.new({
   'first_name' => 'Amy',
@@ -12,6 +13,14 @@ star1 = Star.new({
   })
 
   star1.save()
+
+  movie1 = Movie.new({
+    'title' => 'The Foob Sisters',
+    'genre' => 'comedy',
+    'budget' => '50000000'
+    })
+
+    movie1.save()
 
   binding.pry
 
